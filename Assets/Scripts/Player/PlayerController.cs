@@ -24,10 +24,21 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f, 0.4f)] private float coyoteTime = 0.12f;
     [SerializeField, Range(0f, 0.4f)] private float jumpBufferTime = 0.15f;
 
-    [Header("Вигляд")]                                   // NEW
-    [SerializeField] private Animator animator;          // NEW
-    [SerializeField] private SpriteRenderer spriteRenderer; // NEW
-    private static readonly int SpeedHash = Animator.StringToHash("Speed"); // NEW
+    [Header("Вигляд")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
+    [Header("Зворотний звʼязок")]
+    [SerializeField, Range(1f, 40f)] private float hardLandingSpeed = 28f;
+    [SerializeField, Range(0.02f, 0.1f)] private float hitStopDuration = 0.05f;
+    [SerializeField] private HitStop hitStop;
+
+    [Header("Звук")]
+    [SerializeField] private AudioSource source;
+    [SerializeField] private AudioClip[] footsteps;       // щонайменше ТРИ кліпи
+    [SerializeField, Range(0f, 0.3f)] private float pitchVariance = 0.12f;
+    [SerializeField, Range(0.1f, 0.8f)] private float stepInterval = 0.32f;
 
     private Rigidbody2D body;
     private PlayerControls controls;
@@ -35,6 +46,9 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private float coyoteCounter;
     private float jumpBufferCounter;
+    private bool wasGrounded;
+    private float fallSpeed;   // найбільша швидкість падіння перед дотиком
+    private float stepTimer;
 
     // v = √(2·g·h), де g = 9.81 × baseGravity
     private float JumpVelocity =>
@@ -44,6 +58,8 @@ public class PlayerController : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         controls = new PlayerControls();
+        // Якщо поле не заповнене в Inspector (наприклад, Player — префаб), шукаємо самі
+        if (hitStop == null) hitStop = FindAnyObjectByType<HitStop>();
     }
 
     // Без Enable введення не приходить — і помилки при цьому не буде
@@ -75,7 +91,9 @@ public class PlayerController : MonoBehaviour
         // Введення читаємо в Update: FixedUpdate може пропустити короткий натиск
         moveInput = controls.Player.Move.ReadValue<Vector2>().x;
 
-        UpdateVisuals(); // NEW
+        UpdateFootsteps();
+        CheckLanding();
+        UpdateVisuals();
     }
 
     private void FixedUpdate()
@@ -102,11 +120,58 @@ public class PlayerController : MonoBehaviour
         body.linearVelocity = new Vector2(body.linearVelocity.x, JumpVelocity);
     }
 
-    // NEW — анімація за ФІЗИЧНИМ станом тіла, а не за натиснутою клавішею
+    // ---------- Приземлення і juice ----------
+    private void CheckLanding()
+    {
+        // Поки летимо вниз — памʼятаємо, наскільки швидко
+        if (!isGrounded)
+            fallSpeed = Mathf.Max(fallSpeed, -body.linearVelocity.y);
+
+        if (isGrounded && !wasGrounded)   // саме ПЕРЕХІД, а не стан
+            OnLanded(fallSpeed);
+
+        if (isGrounded) fallSpeed = 0f;
+        wasGrounded = isGrounded;
+    }
+
+    private void OnLanded(float speed)
+    {
+        Debug.Log($"Приземлення: швидкість {speed:F1}");
+        // ТІЛЬКИ жорстке приземлення. Легкий зскок зі сходинки ефекту не дає
+        if (speed < hardLandingSpeed) return;
+        if (hitStop != null) hitStop.Stop(hitStopDuration);
+    }
+
+    // ---------- Звук кроків ----------
+    private void UpdateFootsteps()
+    {
+        bool running = isGrounded && Mathf.Abs(body.linearVelocity.x) > 0.5f;
+        // Не біжимо — скидаємо таймер, щоб перший крок після старту був одразу
+        if (!running) { stepTimer = 0f; return; }
+
+        stepTimer -= Time.deltaTime;
+        if (stepTimer <= 0f)
+        {
+            PlayFootstep();
+            stepTimer = stepInterval;
+        }
+    }
+
+    private void PlayFootstep()
+    {
+        if (source == null || footsteps == null || footsteps.Length == 0) return;
+        // 1) різні кліпи — прибирає впізнаваність конкретного звуку
+        AudioClip clip = footsteps[Random.Range(0, footsteps.Length)];
+        // 2) розкид висоти тону — прибирає механічність повторення
+        source.pitch = 1f + Random.Range(-pitchVariance, pitchVariance);
+        source.PlayOneShot(clip);
+    }
+
+    // ---------- Вигляд ----------
+    // Анімація за ФІЗИЧНИМ станом тіла, а не за натиснутою клавішею
     private void UpdateVisuals()
     {
         animator.SetFloat(SpeedHash, Mathf.Abs(body.linearVelocity.x));
-
         // flipX, а НЕ мінусовий масштаб: інакше дочірній GroundCheck переїде
         if (Mathf.Abs(moveInput) > 0.01f)
             spriteRenderer.flipX = moveInput < 0f;

@@ -654,8 +654,8 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 0.99999994
+    height: 0.9973475
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -1671,6 +1671,13 @@ MonoBehaviour:
   jumpBufferTime: 0.15
   animator: {fileID: 1114448613}
   spriteRenderer: {fileID: 1114448610}
+  hardLandingSpeed: 20
+  hitStopDuration: 0.05
+  hitStop: {fileID: 1254489205}
+  source: {fileID: 0}
+  footsteps: []
+  pitchVariance: 0.12
+  stepInterval: 0.32
 --- !u!95 &1114448613
 Animator:
   serializedVersion: 7
@@ -1826,6 +1833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1254489204}
+  - component: {fileID: 1254489205}
   m_Layer: 0
   m_Name: SYSTEMS
   m_TagString: Untagged
@@ -1850,6 +1858,18 @@ Transform:
   - {fileID: 1876409320}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1254489205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1254489203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 456980f3f8cfc1f4c862b1c47225eb2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitStop
 --- !u!1001 &1350802859
 PrefabInstance:
   m_ObjectHideFlags: 0
