@@ -40,6 +40,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f, 0.3f)] private float pitchVariance = 0.12f;
     [SerializeField, Range(0.1f, 0.8f)] private float stepInterval = 0.32f;
 
+    [Header("Взаємодія")]
+    [SerializeField] private Transform interactPoint;
+    [SerializeField, Range(0.2f, 1.5f)] private float interactRadius = 0.6f;
+    [SerializeField] private LayerMask interactableLayer;
+
     private Rigidbody2D body;
     private PlayerControls controls;
     private float moveInput;
@@ -90,6 +95,10 @@ public class PlayerController : MonoBehaviour
 
         // Введення читаємо в Update: FixedUpdate може пропустити короткий натиск
         moveInput = controls.Player.Move.ReadValue<Vector2>().x;
+
+        // Контролер знає лише КОЛИ взаємодіяти; ЩО станеться — вирішує сам об'єкт
+        if (controls.Player.Interact.WasPressedThisFrame())
+            TryInteract();
 
         UpdateFootsteps();
         CheckLanding();
@@ -177,6 +186,16 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = moveInput < 0f;
     }
 
+    // ---------- Взаємодія ----------
+    // Шукаємо будь-який IInteractable у колі біля грудей. Про Lever контролер не знає нічого
+    private void TryInteract()
+    {
+        Collider2D hit = Physics2D.OverlapCircle(
+            interactPoint.position, interactRadius, interactableLayer);
+        if (hit != null && hit.TryGetComponent(out IInteractable target))
+            target.Interact();
+    }
+
     // Коло перекриває всю ширину ніг, а не одну точку
     private bool CheckGround() =>
         Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
@@ -186,5 +205,11 @@ public class PlayerController : MonoBehaviour
         if (groundCheck == null) return;
         Gizmos.color = Application.isPlaying && isGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        if (interactPoint != null)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(interactPoint.position, interactRadius);
+        }
     }
 }
