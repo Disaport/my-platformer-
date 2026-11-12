@@ -24,6 +24,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Range(0f, 0.4f)] private float coyoteTime = 0.12f;
     [SerializeField, Range(0f, 0.4f)] private float jumpBufferTime = 0.15f;
 
+    [Header("Вигляд")]                                   // NEW
+    [SerializeField] private Animator animator;          // NEW
+    [SerializeField] private SpriteRenderer spriteRenderer; // NEW
+    private static readonly int SpeedHash = Animator.StringToHash("Speed"); // NEW
+
     private Rigidbody2D body;
     private PlayerControls controls;
     private float moveInput;
@@ -69,6 +74,8 @@ public class PlayerController : MonoBehaviour
 
         // Введення читаємо в Update: FixedUpdate може пропустити короткий натиск
         moveInput = controls.Player.Move.ReadValue<Vector2>().x;
+
+        UpdateVisuals(); // NEW
     }
 
     private void FixedUpdate()
@@ -93,6 +100,16 @@ public class PlayerController : MonoBehaviour
         // Фіксуємо масштаб ДО імпульсу: інакше злетимо з чужою гравітацією
         body.gravityScale = baseGravity;
         body.linearVelocity = new Vector2(body.linearVelocity.x, JumpVelocity);
+    }
+
+    // NEW — анімація за ФІЗИЧНИМ станом тіла, а не за натиснутою клавішею
+    private void UpdateVisuals()
+    {
+        animator.SetFloat(SpeedHash, Mathf.Abs(body.linearVelocity.x));
+
+        // flipX, а НЕ мінусовий масштаб: інакше дочірній GroundCheck переїде
+        if (Mathf.Abs(moveInput) > 0.01f)
+            spriteRenderer.flipX = moveInput < 0f;
     }
 
     // Коло перекриває всю ширину ніг, а не одну точку
