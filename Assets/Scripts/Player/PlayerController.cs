@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Зворотний звʼязок")]
     [SerializeField, Range(1f, 40f)] private float hardLandingSpeed = 28f;
-    [SerializeField, Range(0.02f, 0.1f)] private float hitStopDuration = 0.05f;
+    [SerializeField, Range(0.02f, 0.3f)] private float hitStopDuration = 0.12f;
     [SerializeField] private HitStop hitStop;
 
     [Header("Звук")]
