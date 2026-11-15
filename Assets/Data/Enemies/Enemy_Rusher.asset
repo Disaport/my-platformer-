@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfff4e3d9d524322b2db6119e04e80ef, type: 3}
+  m_Name: Enemy_Rusher
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStatsSO
+  patrolSpeed: 2.5
+  chaseSpeed: 6
+  chaseRange: 9
+  attackRange: 1.1
+  attackRadius: 0.6
+  verticalTolerance: 1.5
+  chaseExitFactor: 1.2
+  loseTargetTime: 1
+  stopDistance: 0.6
+  maxHealth: 12
+  damage: 8
+  telegraphTime: 0.2
+  recoveryTime: 0.15
+  hurtTime: 0.3
+  tint: {r: 0.996078, g: 0.905882, b: 0.380392, a: 1}
+  sizeScale: 0.85
+  telegraphSfx: {fileID: 8300000, guid: 1935c03842a14572803cc6a0968da2a3, type: 3}
+  ranged: 0
