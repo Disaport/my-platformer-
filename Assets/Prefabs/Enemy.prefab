@@ -465,7 +465,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   audioSource: {fileID: 5971255735988462092}
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 5923002297805733512, guid: 6ae2de854ff8a064bb4cd9cf9b15957c, type: 3}
   debugState: 
   debugDistance: 0
   debugSameLevel: 0
