@@ -23,7 +23,7 @@ MonoBehaviour:
   stopDistance: 0.6
   maxHealth: 30
   damage: 10
-  telegraphTime: 0.45
+  telegraphTime: 0.05
   recoveryTime: 0.35
   hurtTime: 0.3
   tint: {r: 0.388235, g: 0.780392, b: 0.301961, a: 1}
