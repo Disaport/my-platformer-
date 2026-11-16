@@ -39,6 +39,13 @@ public class EnemyController : MonoBehaviour
 
     private ObjectPool<Projectile> pool;
 
+    [Header("Налагодження (лише для читання)")]
+    [SerializeField] private string debugState;
+    [SerializeField] private float debugDistance;
+    [SerializeField] private bool debugSameLevel;
+    [SerializeField] private bool debugAtEdge;
+    [SerializeField] private bool debugAtWall;
+
     private void Awake()
     {
         Body = GetComponent<Rigidbody2D>();
@@ -76,7 +83,16 @@ public class EnemyController : MonoBehaviour
 
     private void Start() => Machine.ChangeState(PatrolState);
 
-    private void Update() => Machine.Tick();
+    private void Update()
+    {
+        Machine.Tick();
+        // Видно в Inspector під час гри: який стан і чому
+        debugState = Machine.Current?.GetType().Name;
+        debugDistance = DistanceToTarget;
+        debugSameLevel = TargetOnSameLevel;
+        debugAtEdge = AtEdge();
+        debugAtWall = AtWall();
+    }
 
     // Відстань міряємо ПО ГОРИЗОНТАЛІ: висоту окремо перевіряє
     // TargetOnSameLevel, тому пряма відстань тут тільки заважала б

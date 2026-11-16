@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1047488001232274517}
   - component: {fileID: 3362858848862008669}
+  - component: {fileID: 6736056646102170055}
   m_Layer: 12
   m_Name: Visual
   m_TagString: Untagged
@@ -154,6 +155,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &6736056646102170055
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123186454733985163}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: caed38e57ad24954c8dfdca5b4ee5e39, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2153247602914648766
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +466,11 @@ MonoBehaviour:
     m_Bits: 2048
   audioSource: {fileID: 5971255735988462092}
   projectilePrefab: {fileID: 0}
+  debugState: 
+  debugDistance: 0
+  debugSameLevel: 0
+  debugAtEdge: 0
+  debugAtWall: 0
 --- !u!114 &2254447850680595143
 MonoBehaviour:
   m_ObjectHideFlags: 0
