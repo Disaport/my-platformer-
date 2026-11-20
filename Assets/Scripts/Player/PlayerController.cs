@@ -74,6 +74,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // Гра на паузі: ввід не читаємо взагалі. Інакше гравець
+        // стрибає й натискає E крізь відкрите меню
+        if (PauseController.IsPaused) return;
+
         isGrounded = CheckGround();
 
         // Поповнюємо coyote лише коли стоїмо, а не летимо вгору (інакше подвійний стрибок)
