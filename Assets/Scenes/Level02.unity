@@ -5496,7 +5496,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39532852, y: 1.3199964, z: -10}
+  m_LocalPosition: {x: 0.21754837, y: 1.3199964, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12496,6 +12496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LifecycleLogger
   label: B
+  updateCount: 0
 --- !u!1001 &1877027223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13287,6 +13288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LifecycleLogger
   label: A
+  updateCount: 0
 --- !u!1 &2120051847
 GameObject:
   m_ObjectHideFlags: 0
@@ -13326,9 +13328,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1536531500265155359, guid: c917403cf03b9bc42884d4f47695f5ff, type: 3}
+      propertyPath: m_Name
+      value: ResumeButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3891485312393068896, guid: c917403cf03b9bc42884d4f47695f5ff, type: 3}
+      propertyPath: m_Name
+      value: RestartButton
+      objectReference: {fileID: 0}
     - target: {fileID: 5165608893908223565, guid: c917403cf03b9bc42884d4f47695f5ff, type: 3}
       propertyPath: m_Name
       value: GameplayUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6910256940983000919, guid: c917403cf03b9bc42884d4f47695f5ff, type: 3}
+      propertyPath: m_Name
+      value: MenuButton
       objectReference: {fileID: 0}
     - target: {fileID: 6998100126759259630, guid: c917403cf03b9bc42884d4f47695f5ff, type: 3}
       propertyPath: m_LocalPosition.x
